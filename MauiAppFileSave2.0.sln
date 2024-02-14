@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiAppFileSave2.0", "MauiA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Maui.Core", "..\Maui\src\CommunityToolkit.Maui.Core\CommunityToolkit.Maui.Core.csproj", "{6683111C-6515-40E6-80E9-6D2AB4045144}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSaverAppTester", "FileSaverAppTester\FileSaverAppTester.csproj", "{C0953258-1FBF-4672-AB40-CCC95C7E3303}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,12 @@ Global
 		{6683111C-6515-40E6-80E9-6D2AB4045144}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6683111C-6515-40E6-80E9-6D2AB4045144}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6683111C-6515-40E6-80E9-6D2AB4045144}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0953258-1FBF-4672-AB40-CCC95C7E3303}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0953258-1FBF-4672-AB40-CCC95C7E3303}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0953258-1FBF-4672-AB40-CCC95C7E3303}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C0953258-1FBF-4672-AB40-CCC95C7E3303}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0953258-1FBF-4672-AB40-CCC95C7E3303}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0953258-1FBF-4672-AB40-CCC95C7E3303}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
