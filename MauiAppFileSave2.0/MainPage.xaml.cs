@@ -4,7 +4,7 @@ namespace MauiAppFileSave2._0
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        double percentage = 0;
 
         public MainPage()
         {
@@ -14,7 +14,7 @@ namespace MauiAppFileSave2._0
         private async void OnCounterClicked(object sender, EventArgs e)
         {
             //Generate a huge dummy file just for the example.
-            String sDummyPath = Path.Combine(FileSystem.Current.CacheDirectory, "huge_dummy_file.txt");
+            String sDummyPath = Path.Combine("./", "huge_dummy_file.txt");
             FileStream fs = new FileStream(sDummyPath, FileMode.OpenOrCreate);
             fs.Seek(2048L * 1024 * 1024, SeekOrigin.Begin);
             fs.WriteByte(0);
@@ -26,6 +26,8 @@ namespace MauiAppFileSave2._0
 
                 var progession = new Progress<double>(progression =>
                 {
+                    percentage = Math.Round(progression * 100);
+                    this.percent.Text = $"{Math.Round(progression * 100)}%";
                     this.progess.ProgressTo(progression, 300, Easing.Linear);
                 });
 
