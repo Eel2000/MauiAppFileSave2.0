@@ -4,7 +4,6 @@ namespace MauiAppFileSave2._0
 {
     public partial class MainPage : ContentPage
     {
-        double percentage = 0;
 
         public MainPage()
         {
@@ -26,7 +25,6 @@ namespace MauiAppFileSave2._0
 
                 var progession = new Progress<double>(progression =>
                 {
-                    percentage = Math.Round(progression * 100);
                     this.percent.Text = $"{Math.Round(progression * 100)}%";
                     this.progess.ProgressTo(progression, 300, Easing.Linear);
                 });
