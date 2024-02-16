@@ -36,6 +36,11 @@ public static class FileSaver
 	public static Task<FileSaverResult> SaveAsync(string fileName, Stream stream, IProgress<double> progress, CancellationToken cancellationToken = default) =>
 		Default.SaveAsync(fileName, stream, progress, cancellationToken);
 
+	///<inheritdoc cref="IFileSaver.BulkSaveAsync(IReadOnlyDictionary{string, Stream}, CancellationToken)"/>
+	[SupportedOSPlatform("Android")]
+	public static Task<FileSaverResult> BulkSaveAsync(IReadOnlyDictionary<string, Stream> files, CancellationToken cancellationToken = default) =>
+		Default.BulkSaveAsync(files, cancellationToken);
+
 	internal static void SetDefault(IFileSaver implementation) =>
 		defaultImplementation = new(implementation);
 }

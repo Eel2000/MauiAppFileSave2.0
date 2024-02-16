@@ -22,4 +22,9 @@ public sealed partial class FileSaverImplementation : IFileSaver
 	{
 		throw new NotImplementedException();
 	}
+
+	Task<string> InternalBulkSaveAsync(string initialPath, IReadOnlyDictionary<string, Stream> files, CancellationToken cancellationToken)
+	{
+		throw new NotImplementedException();
+	}
 }

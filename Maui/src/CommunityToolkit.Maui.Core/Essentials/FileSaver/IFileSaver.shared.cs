@@ -34,6 +34,14 @@ public interface IFileSaver
 	[SupportedOSPlatform("Windows")]
 	Task<FileSaverResult> SaveAsync(string fileName, Stream stream, CancellationToken cancellationToken = default);
 
+	/// <summary>
+	/// Saves multiple files to the default folder on the file system
+	/// </summary>
+	/// <param name="files">List of key pairs value where key is fileName and value is stream name with extension</param>
+	/// <param name="cancellationToken"><see cref="CancellationToken"/></param>
+	[SupportedOSPlatform("Android")]
+	Task<FileSaverResult> BulkSaveAsync(IReadOnlyDictionary<string, Stream> files, CancellationToken cancellationToken = default);
+
 
 	/// <summary>
 	/// Saves a file to the default folder on the file system and repport the progression

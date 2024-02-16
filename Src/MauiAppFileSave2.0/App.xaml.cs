@@ -8,5 +8,22 @@
 
             MainPage = new AppShell();
         }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+            Dispatcher.Dispatch(async () =>
+            {
+                var storagePerm = await Permissions.RequestAsync<Permissions.StorageWrite>();
+                if (storagePerm is not PermissionStatus.Granted)
+                {
+                    do
+                    {
+                        storagePerm = await Permissions.RequestAsync<Permissions.StorageWrite>();
+                    } while (storagePerm is not PermissionStatus.Granted);
+                }
+            });
+        }
     }
 }

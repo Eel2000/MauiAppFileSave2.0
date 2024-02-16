@@ -61,6 +61,68 @@ public sealed partial class FileSaverImplementation : IFileSaver
 		}
 	}
 
+	static async Task<string> InternalBulkSaveAsync(string initialPath, IReadOnlyList<KeyValuePair<string, Stream>> files, CancellationToken cancellationToken)
+	{
+		if (!OperatingSystem.IsAndroidVersionAtLeast(26) && !string.IsNullOrEmpty(initialPath))
+		{
+			Trace.WriteLine("Specifying an initial path is only supported on Android 26 and later.");
+		}
+
+
+		if (!OperatingSystem.IsAndroidVersionAtLeast(33))
+		{
+			var status = await Permissions.RequestAsync<Permissions.StorageWrite>().WaitAsync(cancellationToken).ConfigureAwait(false);
+			if (status is not PermissionStatus.Granted)
+			{
+				throw new PermissionException("Storage permission is not granted.");
+			}
+		}
+
+		var buffer = ArrayPool<byte>.Shared.Rent(4096);
+
+		int savedFiles = 0;
+
+		var root = EnsurePhysicalPath();
+		if (root is null)
+		{
+			throw new FileSaveException("Roo folder not found cannot save");
+		}
+
+		try
+		{
+			foreach (var f in files)
+			{
+				Java.IO.File file = new Java.IO.File(root, f.Key);
+				file.CreateNewFile();
+
+				if (file.Exists())
+				{
+					using OutputStream fo = new FileOutputStream(file);
+
+					int bytesRead;
+					long totalRead = 0;
+
+					while ((bytesRead = await f.Value.ReadAsync(buffer, cancellationToken).ConfigureAwait(false)) > 0)
+					{
+						await fo.WriteAsync(buffer, 0, bytesRead).WaitAsync(cancellationToken).ConfigureAwait(false);
+						totalRead += bytesRead;
+					}
+
+					savedFiles++;
+				}
+			}
+			return "file created";
+		}
+		catch (Exception ex)
+		{
+			return ex.Message;
+		}
+		finally
+		{
+			ArrayPool<byte>.Shared.Return(buffer);
+		}
+	}
+
 	static async Task<string> InternalSaveAsync(string initialPath, string fileName, Stream stream, IProgress<double> progress, CancellationToken cancellationToken)
 	{
 		if (!OperatingSystem.IsAndroidVersionAtLeast(26) && !string.IsNullOrEmpty(initialPath))
@@ -133,6 +195,22 @@ public sealed partial class FileSaverImplementation : IFileSaver
 		throw new FileSaveException($"Unable to resolve absolute path or retrieve contents of URI '{uri}'.");
 	}
 
+	static Java.IO.File? EnsurePhysicalPath()
+	{
+		Java.IO.File appDowloadDir = new Java.IO.File(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads), DeviceInfo.Current.Name);
+		if (appDowloadDir.Exists())
+		{
+			return appDowloadDir;
+		}
+
+		if (appDowloadDir.Mkdir())
+		{
+			return appDowloadDir;
+		}
+
+		return null;
+	}
+
 	static async Task<string> SaveDocument(AndroidUri uri, Stream stream, CancellationToken cancellationToken)
 	{
 		if (stream.CanSeek)
@@ -202,5 +280,10 @@ public sealed partial class FileSaverImplementation : IFileSaver
 		}
 
 		return uri.ToPhysicalPath() ?? throw new FileSaveException($"Unable to resolve absolute path where the file was saved '{uri}'.");
+	}
+
+	Task<FileSaverResult> BulkSaveAsync(IReadOnlyDictionary<string, Stream> files, CancellationToken cancellationToken)
+	{
+		throw new NotImplementedException();
 	}
 }

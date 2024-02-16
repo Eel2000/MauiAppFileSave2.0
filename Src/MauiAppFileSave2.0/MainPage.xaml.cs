@@ -13,9 +13,9 @@ namespace MauiAppFileSave2._0
         private async void OnCounterClicked(object sender, EventArgs e)
         {
             //Generate a huge dummy file just for the example.
-            String sDummyPath = Path.Combine("./", "huge_dummy_file.txt");
+            String sDummyPath = Path.Combine(FileSystem.Current.CacheDirectory, "huge_dummy_file.txt");
             FileStream fs = new FileStream(sDummyPath, FileMode.OpenOrCreate);
-            fs.Seek(2048L * 1024 * 1024, SeekOrigin.Begin);
+            fs.Seek(1024 * 1024, SeekOrigin.Begin);
             fs.WriteByte(0);
             fs.Close();
 

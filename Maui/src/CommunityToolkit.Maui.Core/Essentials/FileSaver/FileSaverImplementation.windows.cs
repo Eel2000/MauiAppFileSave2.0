@@ -83,6 +83,11 @@ public sealed partial class FileSaverImplementation : IFileSaver
 		return InternalSaveAsync(string.Empty, fileName, stream, cancellationToken);
 	}
 
+	Task<string> InternalBulkSaveAsync(string initialPath, IReadOnlyDictionary<string, Stream> files, CancellationToken cancellationToken)
+	{
+		throw new NotImplementedException();
+	}
+
 	Task<string> InternalSaveAsync(string fileName, Stream stream, IProgress<double> progress, CancellationToken cancellationToken)
 	{
 		return InternalSaveAsync(string.Empty, fileName, stream, progress, cancellationToken);

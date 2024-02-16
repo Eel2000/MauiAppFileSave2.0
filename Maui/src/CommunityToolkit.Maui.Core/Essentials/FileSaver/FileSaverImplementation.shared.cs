@@ -49,6 +49,23 @@ public sealed partial class FileSaverImplementation
 		}
 	}
 
+	/// <inheritdoc/>
+	async Task<FileSaverResult> BulkSaveAsync(IReadOnlyDictionary<string, Stream> files, CancellationToken cancellationToken = default)
+	{
+		try
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			var path = await InternalBulkSaveAsync("/", files, cancellationToken);
+			return new FileSaverResult(path, null);
+		}
+		catch (Exception e)
+		{
+			return new FileSaverResult(null, e);
+			throw;
+		}
+	}
+
+
 	static async Task WriteStream(Stream stream, string filePath, CancellationToken cancellationToken)
 	{
 		await using var fileStream = new FileStream(filePath, FileMode.OpenOrCreate);
